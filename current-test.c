@@ -18,8 +18,8 @@ int main()
 
     int histogram1_id, histogram2_id;
 
-    histogram1_id = prep_histogram(10, 0., 1.);
-    histogram2_id = prep_histogram(10, 1., 2.);
+    histogram1_id = prep_histogram(0., 1., 10);
+    histogram2_id = prep_histogram(1., 2., 10);
 
     double array[500];
 
@@ -45,21 +45,21 @@ int main()
     }
     
     FILE *file;
+    FILE *file2;
+
+
     file = fopen("histogram1.txt", "w");
-
     dump_to_file(histogram1_id, file);
-
-
     fclose(file);
+
+
     file = fopen("histogram1.txt", "r");
     histogram2_id = load_from_file(file);
-
-    FILE *file2;
-    file2 = fopen("histogram2.txt", "w");
-
-    dump_to_file(histogram2_id, file2);
-
     fclose(file);
+
+    
+    file2 = fopen("histogram2.txt", "w");
+    dump_to_file(histogram2_id, file2);
     fclose(file2);
 
     clean_histograms();

@@ -5,12 +5,25 @@
 #include <stdlib.h> 
 #include <math.h>
 
+typedef struct cqpc_histogram
+{
+    short prep;
+    long count;
+    long *cumulative;
+    long nbins;
+    double delta;
+    double min;
+    double max;
+} cqpc_histogram;
+
+
 /** Prepares a new histogram and returns the ID
- * * nbins: number of bins
- * * max: max value to accept when filling the histogram
  * * min: min value to accept when filling the histogram
+ * * max: max value to accept when filling the histogram
+ * * nbins: number of bins
+
 */
-int prep_histogram(int nbins, double max, double min);
+int prep_histogram(double min, double max, int nbins);
 
 
 /** Fill histogram of given ID with nvalues from the array values
@@ -25,6 +38,11 @@ void fill_histogram(int histogram_id, int nvalues, double* values);
 */
 double* get_histogram(int histogram_id);
 
+
+/** Gets a pointer to the cqpc_histogram of given ID
+ * * histogram_id: histogram to get reference of
+*/
+cqpc_histogram* get_cqpc_histogram(int histogram_id);
 
 /** Clean the histogram of given ID from memory
  * * histogram_id: histogram to remove
