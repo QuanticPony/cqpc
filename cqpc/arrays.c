@@ -19,7 +19,8 @@ _##macro##_(double);
 
 
 // Functions to empty arrays of different types
-#define _empty_array_function_(typ) void empty_##typ##_array(typ *array, size_t size) { \
+#define _empty_array_function_(typ) \
+void cqpc_##typ##_array_empty(typ *array, size_t size) { \
     size_t i;\
     for (i = 0; i < size; i++)\
     {\
@@ -33,7 +34,7 @@ apply_macro(empty_array_function)
 
 
 #define _set_value_array_function_(typ) \
-void set_##typ##_array_to(typ value, typ *array, size_t size) { \
+void cqpc_##typ##_array_set_to(typ value, typ *array, size_t size) { \
     size_t i;\
     for (i = 0; i < size; i++)\
     {\
@@ -48,7 +49,7 @@ apply_macro(set_value_array_function)
 
 // Functions to obtain max and min of an array of different types
 #define get_value_function(typ, name, operation) \
-typ get_##name##_##typ##_value(typ *array, size_t size) { \
+typ cqpc_##typ##_array_get_##name##_value(typ *array, size_t size) { \
     size_t i;\
     typ tmp;\
     tmp = array[0];\
@@ -61,7 +62,7 @@ typ get_##name##_##typ##_value(typ *array, size_t size) { \
     return tmp;\
 } 
 #define get_boundaries_function(typ) \
-typ get_boundaries_##typ##_value(typ *array, size_t size, typ *min, typ *max) { \
+typ cqpc_##typ##_array_get_boundaries(typ *array, size_t size, typ *min, typ *max) { \
     size_t i;\
     typ *val, tmp_min, tmp_max;\
     tmp_min = tmp_max = array[0];\
@@ -90,10 +91,25 @@ apply_macro(boundary_functions)
 
 
 
+
+#define _copy_array_function_(typ) \
+void cqpc_##typ##_array_copy_to(typ *from, typ *to, size_t size) { \
+    size_t i;\
+    for (i = 0; i < size; i++)\
+    {\
+        to[i] = from[i];\
+    }\
+} 
+
+apply_macro(copy_array_function)
+
+#undef _copy_array_function_
+
+
 // MAP function over array
 
 #define _map_array_(typ) \
-void map_##typ##_array(typ *array, size_t size, typ (*map_function)(typ)) {\
+void cqpc_map_##typ##_array(typ *array, size_t size, typ (*map_function)(typ)) {\
     size_t i;\
     for (i = 1; i < size; i++)\
     {\

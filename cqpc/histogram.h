@@ -23,7 +23,7 @@ typedef struct cqpc_histogram
  * * nbins: number of bins
 
 */
-int prep_histogram(double min, double max, int nbins);
+int cqpc_histogram_prep(double min, double max, int nbins);
 
 
 /** Fill histogram of given ID with nvalues from the array values
@@ -31,37 +31,37 @@ int prep_histogram(double min, double max, int nbins);
  * * nvalues: number of values to add from values
  * * values: array of values to add
 */
-void fill_histogram(int histogram_id, int nvalues, double* values);
+void cqpc_histogram_fill(int histogram_id, int nvalues, double* values);
 
 /** Gets a pointer to the normalized histogram of given ID
  * * histogram_id: histogram to get copy of
 */
-double* get_histogram(int histogram_id);
+double* cqpc_histogram_get(int histogram_id);
 
 
 /** Gets a pointer to the cqpc_histogram of given ID
  * * histogram_id: histogram to get reference of
 */
-cqpc_histogram* get_cqpc_histogram(int histogram_id);
+cqpc_histogram* cqpc_histogram_get_cqpc(int histogram_id);
 
 /** Clean the histogram of given ID from memory
  * * histogram_id: histogram to remove
 */
-void clean_histogram(int histogram_id);
+void cqpc_histogram_clean(int histogram_id);
 
 /** Cleans all histograms*/
-void clean_histograms();
+void cqpc_histogram_clean_all();
 
 /** Loads histogram to cache and returns the ID assigned
  * * file: pointer to file to read from
 */
-int load_from_file(FILE *file);
+int cqpc_histogram_load_from_file(FILE *file);
 
 /** Saves histogram to file
  * * histogram_id: histogram to save
  * * file: pointer to file to write into
 */
-void dump_to_file(int histogram_id, FILE *file);
+void cqpc_histogram_dump_to_file(int histogram_id, FILE *file);
 
 #ifndef _HISTOGRAM_C_INCLUDED
 #include "histogram.c"

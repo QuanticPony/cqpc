@@ -7,13 +7,13 @@
 
 
 #define normaRandom (2.3283063671E-10F)
-#define random (rand() / ((double)RAND_MAX + 1))
+#define random (rand() / ((double)__INT_MAX__ + 1))
 
-double standard_rand() {
+double cqpc_random_standard_rand() {
     return random;
 }
 
-double parisi_rapuano() {
+double cqpc_random_parisi_rapuano() {
     static unsigned int irr[256];
     static unsigned char ig1, ig2, ig3, ind_Ran;
     static unsigned short initialized = 0;
@@ -36,7 +36,7 @@ double parisi_rapuano() {
     return (irr[ind_Ran++] ^ irr[ig3]) * normaRandom;
 }
 
-double random_uniform(double min, double max, double (*random_function)(void)) {
+double cqpc_random_random_uniform(double min, double max, double (*random_function)(void)) {
     return (max - min) * (*random_function)() + min;
 }
 

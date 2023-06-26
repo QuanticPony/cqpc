@@ -50,7 +50,7 @@ static void realloc_cache(int size)
     }
 }
 
-cqpc_histogram *get_cqpc_histogram(int histogram_id)
+cqpc_histogram *cqpc_histogram_get_cqpc(int histogram_id)
 {
     if (histogram_id >= CACHE.size)
         return (cqpc_histogram*) 0;
@@ -58,7 +58,7 @@ cqpc_histogram *get_cqpc_histogram(int histogram_id)
     return CACHE.histograms + histogram_id;
 }
 
-int prep_histogram(double min, double max, int nbins)
+int cqpc_histogram_prep(double min, double max, int nbins)
 {
     int i;
     i = get_cache_position();
@@ -80,12 +80,12 @@ int prep_histogram(double min, double max, int nbins)
     return i;
 }
 
-void fill_histogram(int histogram_id, int nvalues, double *values)
+void cqpc_histogram_fill(int histogram_id, int nvalues, double *values)
 {
     int i, index;
     double value;
     cqpc_histogram *hist;
-    hist = get_cqpc_histogram(histogram_id);
+    hist = cqpc_histogram_get_cqpc(histogram_id);
 
     for (i = 0; i < nvalues; i++)
     {
@@ -101,7 +101,7 @@ void fill_histogram(int histogram_id, int nvalues, double *values)
     hist->count += nvalues;
 }
 
-double *get_histogram(int histogram_id)
+double* cqpc_histogram_get(int histogram_id)
 {
 
     int i;
@@ -112,7 +112,7 @@ double *get_histogram(int histogram_id)
     histogram = __histograms_return[histogram_id];
 
     cqpc_histogram *hist;
-    hist = get_cqpc_histogram(histogram_id);
+    hist = cqpc_histogram_get_cqpc(histogram_id);
     for (i = 0; i < hist->nbins; i++)
     {
         histogram[i] = k_normalization * hist->cumulative[i];
@@ -121,7 +121,7 @@ double *get_histogram(int histogram_id)
     return histogram;
 }
 
-void clean_histogram(int histogram_id)
+void cqpc_histogram_clean(int histogram_id)
 {
     if (histogram_id >= CACHE.size)
         return;
@@ -140,17 +140,17 @@ void clean_histogram(int histogram_id)
     realloc_cache(CACHE.size - 1);
 }
 
-void clean_histograms()
+void cqpc_histogram_clean_all()
 {
     int i;
 
     for (i = 0; i < CACHE.size; i++)
     {
-        clean_histogram(i);
+        cqpc_histogram_clean(i);
     }
 }
 
-int load_from_file(FILE *file)
+int cqpc_histogram_load_from_file(FILE *file)
 {
     int histogram_id, i;
     double max, min, delta;
@@ -162,8 +162,8 @@ int load_from_file(FILE *file)
     fscanf(file, "// delta=%lf\n", &delta);
     fscanf(file, "// count=%ld\n", &count);
 
-    histogram_id = prep_histogram(min, max, nbins);
-    cqpc_histogram *hist = get_cqpc_histogram(histogram_id);
+    histogram_id = cqpc_histogram_prep(min, max, nbins);
+    cqpc_histogram *hist = cqpc_histogram_get_cqpc(histogram_id);
 
     long read_value;
 
@@ -177,10 +177,10 @@ int load_from_file(FILE *file)
     return histogram_id;
 }
 
-void dump_to_file(int histogram_id, FILE *file)
+void cqpc_histogram_dump_to_file(int histogram_id, FILE *file)
 {
     int i;
-    cqpc_histogram *hist = get_cqpc_histogram(histogram_id);
+    cqpc_histogram *hist = cqpc_histogram_get_cqpc(histogram_id);
 
     fprintf(file, "// nbins=%ld\n", hist->nbins);
     fprintf(file, "// min=%lf\n", hist->min);
@@ -191,6 +191,25 @@ void dump_to_file(int histogram_id, FILE *file)
     for (i = 0; i < hist->nbins; i++)
     {
         fprintf(file, "%ld\n", hist->cumulative[i]);
+    }
+}
+
+
+void cqpc_histogram_dump_to_file_normalized(int histogram_id, FILE *file)
+{
+    int i;
+    cqpc_histogram *hist = cqpc_histogram_get_cqpc(histogram_id);
+    double *hist_norm = cqpc_histogram_get(histogram_id);
+
+    fprintf(file, "// nbins=%ld\n", hist->nbins);
+    fprintf(file, "// min=%lf\n", hist->min);
+    fprintf(file, "// max=%lf\n", hist->max);
+    fprintf(file, "// delta=%f\n", hist->delta);
+    fprintf(file, "// count=%ld\n", hist->count);
+
+    for (i = 0; i < hist->nbins; i++)
+    {
+        fprintf(file, "%lf\n", hist_norm[i]);
     }
 }
 
