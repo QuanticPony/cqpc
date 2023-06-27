@@ -2,8 +2,6 @@
 #ifndef EJ_J_23_INCLUDED
 #define EJ_J_23_INCLUDED
 
-#include "cqpc/cqpc.h"
-
 struct ej_j_23
 {
     size_t n_agents;

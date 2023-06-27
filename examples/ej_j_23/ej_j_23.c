@@ -1,4 +1,4 @@
-#include "cqpc/cqpc.h"
+#include <cqpc.h>
 #include <time.h>
 #include "ej_j_23.h"
 
