@@ -1,5 +1,9 @@
 import subprocess
+import os
+import pathlib
+PATH = pathlib.Path(__file__).parent.resolve()
 
+import numpy as np
 import matplotlib.pyplot as plt
 
 from cqppy import cqpc_histogram
@@ -10,8 +14,15 @@ max_histogram = 400
 t_max = 10000
 total_money = 40000
 
+OUT_DIR = str(PATH) + "/ej_j_23_out"
+
+try:
+    os.mkdir(OUT_DIR)
+except FileExistsError:
+    pass
+
 CMD = lambda i: [str(c) for c in 
-    ["./ej_j_23.o", n_agents, n_bins, t_max, total_money, i, max_histogram]
+    [f"{PATH}/ej_j_23.o", n_agents, n_bins, t_max, total_money, f"{OUT_DIR}/{i}", max_histogram]
 ]
 
 # Start 100 processes
@@ -31,9 +42,18 @@ Hist.nbins = n_bins
 
 plt.subplot()
 for i in range(ITERS):
-    hist = cqpc_histogram.from_file(str(i))
+    hist = cqpc_histogram.from_file(f"{OUT_DIR}/{i}")
     Hist.values[:] += hist.values
+Hist.values /= ITERS
 
 plt.bar(Hist.get_x_array(), Hist.values, Hist.delta)
 
+def theoric(x):
+    T = total_money / n_agents
+    C = 1 / T
+    return C * np.exp(-x/T)
+
+plt.plot(Hist.get_x_array(), theoric(Hist.get_x_array()), color="red")
+
+plt.savefig("Result.svg")
 plt.show()

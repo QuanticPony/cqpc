@@ -59,3 +59,4 @@ dkms.conf
 
 .vscode/
 __pycache__/
+*.egg-info
