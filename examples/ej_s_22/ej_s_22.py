@@ -14,7 +14,7 @@ max_histogram = 400
 t_max = 10000
 total_money = 40000
 
-OUT_DIR = str(PATH) + "/ej_j_23_out"
+OUT_DIR = str(PATH) + "/ej_s_22_out"
 
 try:
     os.mkdir(OUT_DIR)
@@ -22,7 +22,7 @@ except FileExistsError:
     pass
 
 CMD = lambda i: [str(c) for c in 
-    [f"{PATH}/ej_j_23.o", n_agents, n_bins, t_max, total_money, f"{OUT_DIR}/{i}", max_histogram]
+    [f"{PATH}/ej_s_22.o", n_agents, n_bins, t_max, total_money, f"{OUT_DIR}/{i}", max_histogram]
 ]
 
 # Start 100 processes

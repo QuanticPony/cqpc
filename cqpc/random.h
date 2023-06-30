@@ -15,7 +15,17 @@ double cqpc_random_parisi_rapuano();
  * * max: right boundary of uniform distribution
  * * random_funciton: random uniform generator [0,1)
 */
-double cqpc_random_random_uniform(double min, double max, double (*random_function)(void));
+double cqpc_random_uniform(double min, double max, double (*random_function)(void));
+
+
+/** Random normal generator using Box Muller method */
+double cqpc_random_box_muller();
+
+/** Random gaussian generator using Box Muller method
+ * * mean: mean of random distribution
+ * * sigma: standard deviation
+*/
+double cqpc_random_gaussian(double mean, double sigma);
 
 #ifndef _RANDOM_C_INCLUDED
 #include "random.c"

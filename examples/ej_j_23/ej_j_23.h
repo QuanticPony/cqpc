@@ -45,7 +45,7 @@ int init_from_stdin(int argc, char const *argv[], struct ej_j_23 *configuration)
 
 /* Returns a random agent*/
 size_t random_agent(size_t n_agents){
-    return (size_t) cqpc_random_random_uniform(0, n_agents, cqpc_random_parisi_rapuano);
+    return (size_t) cqpc_random_uniform(0, n_agents, cqpc_random_parisi_rapuano);
 }
 
 /* Returns a new agent to make a transaction with  */
@@ -64,7 +64,7 @@ size_t choose_agent(size_t agent, size_t n_agents){
  * 1 - transaction j to i
 */
 int transaction_direction(size_t agent_i, size_t agent_j, double* money) {
-    return (int) cqpc_random_random_uniform(0, 2, cqpc_random_parisi_rapuano);
+    return (int) cqpc_random_uniform(0, 2, cqpc_random_parisi_rapuano);
 }
 
 /* Returns a transaction amount from "agent_i" to "agent_j"*/
